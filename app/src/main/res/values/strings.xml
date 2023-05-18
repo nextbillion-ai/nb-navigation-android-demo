@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">NBNavSDKExample</string>
+    <string name="fetch_route">Fetch Route</string>
+    <string name="fetch_route_with_routefetcher">Fetch Route with RouteFetcher</string>
+    <string name="draw_route">Draw Route Line with duration symbol</string>
+    <string name="draw_route_without">Draw Route Line without duration symbol</string>
+    <string name="start_navigation">Start Navigation</string>
+    <string name="start_navigation_with_custom_route_line">Start Navigation with custom route line</string>
+    <string name="start_navigation_with_custom_top_panel">Start Navigation with custom Top Banner panel</string>
+    <string name="start_navigation_with_custom_bottom_panel">Start Navigation with custom Bottom ETA panel</string>
+    <string name="start_navigation_with_custom_instruction_list">Start Navigation with custom Instruction List</string>
+    <string name="start_navigation_with_custom_floating_button">Start Navigation with custom Floating Buttons</string>
+
+    <string name="start_navigation_with_light_mode">Start Navigation with Light Mode</string>
+    <string name="start_navigation_with_dark_mode">Start Navigation with Dark Mode</string>
+    <string name="start_navigation_with_system_setting_mode">Start Navigation with System setting Mode</string>
+
+    <string name="hide_route_duration">Hide Route Duration Symbol</string>
+    <string name="category">category</string>
+    <string name="category_navigation">Navigation</string>
+    <string name="category_customize">Customise</string>
+
+    <string name="activity_navigation">Launch Navigation</string>
+    <string name="activity_navigation_view">Launch Navigation View</string>
+    <string name="activity_draw_route_line">Draw Route line</string>
+    <string name="activity_draw_route_line_with_alt">Draw Route line with alternative route</string>
+    <string name="activity_frame_map">Frame the map</string>
+    <string name="activity_intercept_click_events">Intercept click events</string>
+    <string name="activity_fetch_routes">Fetch routes</string>
+    <string name="activity_customise_navigation_style">Navigation Style</string>
+    <string name="activity_track_current_location">Track Current Location</string>
+    <string name="activity_hide_navigation_element">Show or Hide Element</string>
+    <string name="activity_customise_location_puck">Location puck</string>
+    <string name="activity_customise_element_attributes">Navigation View Attributes</string>
+    <string name="activity_customise_alternative_routes">Alternative routes</string>
+    <string name="activity_customise_route_line_style">Route Line Style</string>
+    <string name="activity_customise_top_banner_panel">Top Banner Panel</string>
+    <string name="activity_customise_instruction_list">Instruction List</string>
+    <string name="activity_customise_bottom_eta_panel">Bottom ETA Panel</string>
+    <string name="activity_customise_floating_buttons">Floating Buttons</string>
+    <string name="activity_customise_navigation_theme">Navigation Theme</string>
+    <string name="activity_customise_dissolved_route_line_style">Dissolved Route Line Theme</string>
+
+
+    <string name="description_navigation_activity">A complete turn-by-turn experience using default NavigationLauncher</string>
+    <string name="description_navigation_view_activity">A complete turn-by-turn experience using NavigationView</string>
+    <string name="description_draw_route_lines_activity">Draw route lines on a map</string>
+    <string name="description_draw_route_lines_with_alt_activity">Draw route lines with alternative route on a map</string>
+    <string name="description_frame_the_map">Use camera to frame the map</string>
+    <string name="description_intercept_click_events_activity">Intercept click and long click event of nbMap</string>
+    <string name="description_fetch_routes_activity">Fetch routes between an origin and destination</string>
+    <string name="description_customise_navigation_style_activity">Customise NavNextbillionMap style at runtime</string>
+    <string name="description_track_current_location_activity">Track current location on a map</string>
+    <string name="description_hide_navigation_element_activity">Show or Hide Navigation View Element based on requirements</string>
+    <string name="description_customise_location_puck_activity">Customize location puck for navigation states using Navigation View</string>
+    <string name="description_customise_element_attributes_activity">Customize info panel background and additional properties using Navigation View</string>
+    <string name="description_customise_alternative_routes_activity">Show or Hide AlternativeRoutes and Route Duration symbol</string>
+    <string name="description_intercept_long_click_activity">Intercept map long click events using Navigation View</string>
+    <string name="description_toggle_theme_activity">Toggle theme using NavigationView</string>
+    <string name="description_add_annotations_activity">Add view annotations on top of map view using Navigation View</string>
+    <string name="description_customise_route_line_style_activity">Customize styling of Route line</string>
+    <string name="description_customise_top_banner_panel_activity">Customize styling of Top banner panel</string>
+    <string name="description_customise_instruction_list_activity">Customize styling of Instruction list</string>
+    <string name="description_customise_bottom_eta_panel_activity">Customize styling of Bottom ETA panel</string>
+    <string name="description_customise_floating_buttons_activity">Customize styling of Floating buttons</string>
+    <string name="description_customise_navigation_theme">Toggle navigation theme</string>
+    <string name="description__customise_dissolved_route_line_style">Customize styling of Dissolved route line</string>
+
+</resources>

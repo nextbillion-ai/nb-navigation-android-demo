@@ -1,0 +1,338 @@
+{
+  "status": "Ok",
+  "routes": [{
+    "geometry": "amzeiAd`t|qCgTC_B?aS?sDByNGoNE{A?sFCNsb@@s\\Uoo@Bg^JkYb@iXEkFQsVPgMA{MCaONyTFuJ|D?~G?lNAzA@",
+    "distance": 646.9,
+    "duration": 145.1,
+    "weight": 145.1,
+    "start_location": {
+      "latitude": 389.09665,
+      "longitude": -770.31955
+    },
+    "end_location": {
+      "latitude": 389.10571,
+      "longitude": -770.27044
+    },
+    "legs": [{
+      "distance": {
+        "value": 646
+      },
+      "duration": {
+        "value": 145
+      },
+      "start_location": {
+        "latitude": 389.09665,
+        "longitude": -770.31955
+      },
+      "end_location": {
+        "latitude": 389.10571,
+        "longitude": -770.27044
+      },
+      "steps": [{
+        "geometry": "amzeiAd`t|qCgTC_B?aS?sDByNGoNE{A?sFC",
+        "start_location": {
+          "latitude": 389.09665,
+          "longitude": -770.31955
+        },
+        "end_location": {
+          "latitude": 389.11133,
+          "longitude": -770.31946
+        },
+        "distance": {
+          "value": 163
+        },
+        "duration": {
+          "value": 24
+        },
+        "maneuver": {
+          "instruction": "Head north on 14th St NW",
+          "voice_instruction": [],
+          "bearing_before": 0,
+          "bearing_after": 0,
+          "coordinate": {
+            "latitude": 38.909665,
+            "longitude": -77.031955
+          },
+          "maneuver_type": "depart"
+        },
+        "name": "14th St NW",
+        "intersections": [{
+          "location": {
+            "latitude": 38.909665,
+            "longitude": -77.031955
+          },
+          "bearings": [0],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 0,
+          "intersection_out": 0,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.910053,
+            "longitude": -77.031953
+          },
+          "bearings": [0, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 1,
+          "intersection_out": 0,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.910374,
+            "longitude": -77.031953
+          },
+          "bearings": [0, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 1,
+          "intersection_out": 0,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.910717,
+            "longitude": -77.031951
+          },
+          "bearings": [0, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 1,
+          "intersection_out": 0,
+          "lanes": []
+        }],
+        "road_shield_type": {}
+      }, {
+        "geometry": "yh}eiAr_t|qCNsb@@s\\Uoo@Bg^JkYb@iXEkFQsVPgMA{MCaONyTFuJ",
+        "start_location": {
+          "latitude": 389.11133,
+          "longitude": -770.31946
+        },
+        "end_location": {
+          "latitude": 389.11103,
+          "longitude": -770.27044
+        },
+        "distance": {
+          "value": 424
+        },
+        "duration": {
+          "value": 103
+        },
+        "maneuver": {
+          "instruction": "Turn right onto Q St NW",
+          "voice_instruction": [{
+            "distance_along_geometry": 50,
+            "unit": "meters",
+            "instruction": "Turn right onto Q St NW"
+          }],
+          "bearing_before": 0,
+          "bearing_after": 90,
+          "coordinate": {
+            "latitude": 38.911133,
+            "longitude": -77.031946
+          },
+          "maneuver_type": "turn",
+          "modifier": "right"
+        },
+        "name": "Q St NW",
+        "intersections": [{
+          "location": {
+            "latitude": 38.911133,
+            "longitude": -77.031946
+          },
+          "bearings": [0, 90, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 2,
+          "intersection_out": 1,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.911125,
+            "longitude": -77.031376
+          },
+          "bearings": [90, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 2,
+          "intersection_out": 0,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.911124,
+            "longitude": -77.030902
+          },
+          "bearings": [90, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 2,
+          "intersection_out": 0,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.911133,
+            "longitude": -77.029626
+          },
+          "bearings": [0, 90, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 3,
+          "intersection_out": 1,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.911109,
+            "longitude": -77.028799
+          },
+          "bearings": [30, 90, 210, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 3,
+          "intersection_out": 1,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.911112,
+            "longitude": -77.028075
+          },
+          "bearings": [0, 90, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 3,
+          "intersection_out": 1,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.911115,
+            "longitude": -77.02758
+          },
+          "bearings": [0, 90, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 3,
+          "intersection_out": 1,
+          "lanes": []
+        }],
+        "road_shield_type": {}
+      }, {
+        "geometry": "}f}eiAfmj|qC|D?~G?lNAzA@",
+        "start_location": {
+          "latitude": 389.11103,
+          "longitude": -770.27044
+        },
+        "end_location": {
+          "latitude": 389.10571,
+          "longitude": -770.27044
+        },
+        "distance": {
+          "value": 59
+        },
+        "duration": {
+          "value": 16
+        },
+        "maneuver": {
+          "instruction": "Turn right onto 11th St NW",
+          "voice_instruction": [{
+            "distance_along_geometry": 420,
+            "unit": "meters",
+            "instruction": "In 420 meters, Turn right onto 11th St NW"
+          }, {
+            "distance_along_geometry": 200,
+            "unit": "meters",
+            "instruction": "In 200 meters, Turn right onto 11th St NW"
+          }, {
+            "distance_along_geometry": 141,
+            "unit": "meters",
+            "instruction": "In 200 meters, You will arrive"
+          }, {
+            "distance_along_geometry": 50,
+            "unit": "meters",
+            "instruction": "Turn right onto 11th St NW"
+          }],
+          "bearing_before": 91,
+          "bearing_after": 178,
+          "coordinate": {
+            "latitude": 38.911103,
+            "longitude": -77.027044
+          },
+          "maneuver_type": "turn",
+          "modifier": "right"
+        },
+        "name": "11th St NW",
+        "intersections": [{
+          "location": {
+            "latitude": 38.911103,
+            "longitude": -77.027044
+          },
+          "bearings": [0, 120, 180, 270],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 3,
+          "intersection_out": 2,
+          "lanes": []
+        }, {
+          "location": {
+            "latitude": 38.910617,
+            "longitude": -77.027043
+          },
+          "bearings": [0, 60, 180, 240],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 0,
+          "intersection_out": 2,
+          "lanes": []
+        }],
+        "road_shield_type": {}
+      }, {
+        "geometry": "ue|eiAfmj|qC",
+        "start_location": {
+          "latitude": 389.10571,
+          "longitude": -770.27044
+        },
+        "end_location": {
+          "latitude": 389.10571,
+          "longitude": -770.27044
+        },
+        "distance": {
+          "value": 0
+        },
+        "duration": {
+          "value": 0
+        },
+        "maneuver": {
+          "instruction": "You have arrived at 11th St NW",
+          "voice_instruction": [{
+            "distance_along_geometry": 50,
+            "unit": "meters",
+            "instruction": "You have arrived at 11th St NW"
+          }],
+          "bearing_before": 181,
+          "bearing_after": 0,
+          "coordinate": {
+            "latitude": 38.910571,
+            "longitude": -77.027044
+          },
+          "maneuver_type": "arrive"
+        },
+        "name": "11th St NW",
+        "intersections": [{
+          "location": {
+            "latitude": 38.910571,
+            "longitude": -77.027044
+          },
+          "bearings": [1],
+          "classes": [],
+          "entry": [],
+          "intersection_in": 0,
+          "intersection_out": 0,
+          "lanes": []
+        }],
+        "reference": "US-29 S",
+        "road_shield_type": {
+          "label": "US-29 S"
+        }
+      }]
+    }]
+  }],
+  "country_code": "US"
+}
