@@ -39,6 +39,7 @@
     <string name="activity_customise_bottom_eta_panel">Bottom ETA Panel</string>
     <string name="activity_customise_floating_buttons">Floating Buttons</string>
     <string name="activity_customise_navigation_theme">Navigation Theme</string>
+    <string name="activity_load_navigationview_in_fragment">Load NavigationView in Fragment</string>
     <string name="activity_customise_dissolved_route_line_style">Dissolved Route Line Theme</string>
 
 
@@ -64,6 +65,7 @@
     <string name="description_customise_bottom_eta_panel_activity">Customize styling of Bottom ETA panel</string>
     <string name="description_customise_floating_buttons_activity">Customize styling of Floating buttons</string>
     <string name="description_customise_navigation_theme">Toggle navigation theme</string>
+    <string name="description_load_navigationview_in_fragment">Load NavigationView in Fragment</string>
     <string name="description__customise_dissolved_route_line_style">Customize styling of Dissolved route line</string>
 
 </resources>
