@@ -1,6 +1,7 @@
 package ai.nextbillion.navigation.demo.activity;
 
 import android.Manifest;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowInsets;
@@ -8,20 +9,24 @@ import android.view.WindowInsets;
 import java.util.List;
 
 import ai.nextbillion.kits.directions.models.DirectionsRoute;
+import ai.nextbillion.kits.geojson.Point;
 import ai.nextbillion.maps.location.modes.RenderMode;
 import ai.nextbillion.navigation.core.navigation.NavEngineConfig;
+import ai.nextbillion.navigation.core.navigator.NavProgress;
+import ai.nextbillion.navigation.core.navigator.ProgressChangeListener;
 import ai.nextbillion.navigation.demo.R;
 import ai.nextbillion.navigation.ui.NavViewConfig;
 import ai.nextbillion.navigation.ui.NavigationView;
 import ai.nextbillion.navigation.ui.OnNavigationReadyCallback;
 import ai.nextbillion.navigation.ui.listeners.NavigationListener;
+import ai.nextbillion.navigation.ui.listeners.RouteListener;
 import ai.nextbillion.navigation.ui.utils.StatusBarUtils;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
-public class NavigationViewActivity extends AppCompatActivity implements OnNavigationReadyCallback, EasyPermissions.PermissionCallbacks, NavigationListener, StatusBarUtils.OnWindowInsetsChange {
+public class NavigationViewActivity extends AppCompatActivity implements OnNavigationReadyCallback, EasyPermissions.PermissionCallbacks, NavigationListener, StatusBarUtils.OnWindowInsetsChange, ProgressChangeListener, RouteListener {
 
     NavigationView navigationView;
 
@@ -65,7 +70,8 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
         NavEngineConfig.Builder navConfig = NavEngineConfig.builder();
         NavViewConfig.Builder viewConfigBuilder = NavViewConfig.builder();
         viewConfigBuilder.navigationListener(this);
-
+        viewConfigBuilder.progressChangeListener(this);
+        viewConfigBuilder.routeListener(this);
         configRoute(viewConfigBuilder);
         viewConfigBuilder.shouldSimulateRoute(true);
         viewConfigBuilder.showSpeedometer(true);
@@ -170,5 +176,40 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             navigationView.fitSystemWindow(windowInsets);
         }
+    }
+
+    @Override
+    public void onProgressChange(Location location, NavProgress navProgress) {
+
+    }
+
+    @Override
+    public boolean allowRerouteFrom(Location location) {
+        return true;
+    }
+
+    @Override
+    public void onOffRoute(Point point) {
+
+    }
+
+    @Override
+    public void onRerouteAlong(DirectionsRoute directionsRoute) {
+
+    }
+
+    @Override
+    public void onFailedReroute(String s) {
+
+    }
+
+    @Override
+    public void onArrival() {
+
+    }
+
+    @Override
+    public void onUserInTunnel(boolean b) {
+
     }
 }
