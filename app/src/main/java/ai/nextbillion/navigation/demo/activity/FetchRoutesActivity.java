@@ -57,6 +57,7 @@ public class FetchRoutesActivity extends AppCompatActivity implements View.OnCli
                     .avoid(avoid)
                     .language("en")
                     .waypoints(waypoints)
+                    .option(RequestParamConsts.FLEXIBLE)
                     .departureTime((int) (System.currentTimeMillis()/1000));
 
             RouteFetcher.getRoute(builder.build(), new Callback<DirectionsResponse>() {
