@@ -21,6 +21,7 @@
     <string name="category_customize">Customise</string>
 
     <string name="activity_navigation">Launch Navigation</string>
+    <string name="activity_navigation_service">Launch Navigation Service</string>
     <string name="activity_navigation_view">Launch Navigation View</string>
     <string name="activity_draw_route_line">Draw Route line</string>
     <string name="activity_draw_route_line_with_alt">Draw Route line with alternative route</string>
@@ -44,6 +45,7 @@
 
 
     <string name="description_navigation_activity">A complete turn-by-turn experience using default NavigationLauncher</string>
+    <string name="description_navigation_service_activity">Start Navigation without UI Binding</string>
     <string name="description_navigation_view_activity">A complete turn-by-turn experience using NavigationView</string>
     <string name="description_draw_route_lines_activity">Draw route lines on a map</string>
     <string name="description_draw_route_lines_with_alt_activity">Draw route lines with alternative route on a map</string>

@@ -14,6 +14,7 @@
         android:theme="@style/Theme.Nbnavsdkdemo"
         tools:targetApi="31">
 
+
         <activity
             android:name=".activity.NavigationViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -47,6 +48,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.FeatureOverviewActivity" />
         </activity>
+
         <activity
             android:name=".activity.CustomNavigationActivity"
             android:description="@string/description_navigation_view_activity"
@@ -59,6 +61,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.FeatureOverviewActivity" />
         </activity>
+        <activity
+            android:name=".activity.NavigationServiceActivity"
+            android:description="@string/description_navigation_service_activity"
+            android:exported="true"
+            android:label="@string/activity_navigation_service">
+            <meta-data
+                android:name="@string/category"
+                android:value="@string/category_navigation" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.NavigationServiceActivity" />
+        </activity>
+
         <activity
             android:name=".activity.InterceptMapClickActivity"
             android:description="@string/description_intercept_click_events_activity"
@@ -215,11 +230,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.FeatureOverviewActivity" />
         </activity>
-
         <activity
             android:name=".activity.CustomDissolvedLineStyleActivity"
-            android:exported="true"
             android:description="@string/description__customise_dissolved_route_line_style"
+            android:exported="true"
             android:label="@string/activity_customise_dissolved_route_line_style">
             <meta-data
                 android:name="@string/category"
@@ -228,20 +242,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.CustomDissolvedLineStyleActivity" />
         </activity>
-
         <activity
             android:name=".activity.FragmentNavigationActivity"
             android:description="@string/description_load_navigationview_in_fragment"
             android:exported="true"
-            android:label="@string/activity_load_navigationview_in_fragment" >
-
+            android:label="@string/activity_load_navigationview_in_fragment">
             <meta-data
                 android:name="@string/category"
                 android:value="@string/category_customize" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.FeatureOverviewActivity" />
-
         </activity>
     </application>
 
