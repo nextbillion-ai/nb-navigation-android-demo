@@ -22,6 +22,7 @@ import ai.nextbillion.maps.location.engine.LocationEngineRequest;
 import ai.nextbillion.maps.location.engine.LocationEngineResult;
 import ai.nextbillion.navigation.core.location.RawLocationListener;
 import ai.nextbillion.navigation.core.navigation.NBNavigatorWithoutUILauncher;
+import ai.nextbillion.navigation.core.navigation.NavEngineConfig;
 import ai.nextbillion.navigation.core.navigation.NavigationConstants;
 import ai.nextbillion.navigation.core.navigation.NavigationEventListener;
 import ai.nextbillion.navigation.core.navigator.NavProgress;
@@ -33,6 +34,7 @@ import ai.nextbillion.navigation.core.routefetcher.RouteFetcher;
 import ai.nextbillion.navigation.core.utils.DistanceFormatter;
 import ai.nextbillion.navigation.core.utils.time.TimeFormatter;
 import ai.nextbillion.navigation.demo.R;
+import ai.nextbillion.navigation.demo.activity.notification.CustomNavigationNotification;
 import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,6 +74,9 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
         inputDes = findViewById(R.id.input_des);
 
         initializeLocationEngine();
+
+        initNavLauncher();
+
         fetchRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +88,7 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
             @Override
             public void onClick(View v) {
                 if (route != null) {
+                    startNavigation.setEnabled(false);
                     startNavigation(route);
                 }
             }
@@ -92,6 +98,7 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
             @Override
             public void onClick(View v) {
                 if (launcher != null) {
+                    startNavigation.setEnabled(true);
                     launcher.exitNavigation();
                 }
                 navigationOffRouteStatus.setText("");
@@ -155,15 +162,21 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
         });
     }
 
-    protected void startNavigation(DirectionsRoute route) {
-        launcher = new NBNavigatorWithoutUILauncher(this);
+    private void initNavLauncher() {
+        NavEngineConfig navEngineConfig = NavEngineConfig.builder()
+                .navigationNotification(new CustomNavigationNotification(this))
+                .build();
+
+        launcher = new NBNavigatorWithoutUILauncher(this, navEngineConfig);
         launcher.addReroutingCallback(this);
         launcher.addNavigationEventListener(this);
         launcher.addOffRouteListener(this);
         launcher.addRawLocationListener(this);
         launcher.addProgressChangeListener(this);
-        launcher.startNavigationWithoutUI(route);
+    }
 
+    protected void startNavigation(DirectionsRoute route) {
+        launcher.startNavigationWithoutUI(route);
     }
 
     @Override
@@ -191,7 +204,9 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
         if (offRouteStatus == OffRouteStatus.OFF_ROUTE) {
             Toast.makeText(this, "Deviated from the suggested route", Toast.LENGTH_SHORT).show();
         }
-        navigationOffRouteStatus.setText(offRouteStatus.toString());
+        if (offRouteStatus != null) {
+            navigationOffRouteStatus.setText(offRouteStatus.toString());
+        }
     }
 
     @Override
