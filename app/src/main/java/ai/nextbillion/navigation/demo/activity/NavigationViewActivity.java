@@ -180,7 +180,9 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
 
     @Override
     public void onProgressChange(Location location, NavProgress navProgress) {
-
+        double durationRemaining = navProgress.durationRemaining;
+        double distanceRemaining = navProgress.distanceRemaining;
+        int remainingWaypoints = navProgress.remainingWaypoints;
     }
 
     @Override
