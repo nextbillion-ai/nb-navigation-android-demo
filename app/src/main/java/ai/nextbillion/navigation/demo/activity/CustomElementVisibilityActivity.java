@@ -4,6 +4,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+
 import ai.nextbillion.kits.directions.models.DirectionsResponse;
 import ai.nextbillion.kits.directions.models.RouteRequestParams;
 import ai.nextbillion.navigation.core.routefetcher.RequestParamsWrapper;
@@ -12,15 +18,9 @@ import ai.nextbillion.navigation.ui.NavViewConfig;
 import ai.nextbillion.navigation.ui.NavigationView;
 import ai.nextbillion.navigation.ui.OnNavigationReadyCallback;
 import ai.nextbillion.navigation.ui.listeners.NavigationListener;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
 
 /***
  * This class demonstrates how to add an extra switch button on Appbar
@@ -29,12 +29,13 @@ import java.util.Scanner;
 
 public class CustomElementVisibilityActivity extends AppCompatActivity implements OnNavigationReadyCallback, NavigationListener {
     private NavigationView navigationView;
-
+    private FloatingActionButton menuOpen;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_element_visibility);
         navigationView = findViewById(R.id.custom_element_navigation_view);
+        menuOpen = findViewById(R.id.menu_open);
         navigationView.onCreate(savedInstanceState);
         navigationView.initialize(this);
     }
