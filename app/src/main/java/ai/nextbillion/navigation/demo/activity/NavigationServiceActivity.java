@@ -35,7 +35,9 @@ import ai.nextbillion.navigation.core.utils.DistanceFormatter;
 import ai.nextbillion.navigation.core.utils.time.TimeFormatter;
 import ai.nextbillion.navigation.demo.R;
 import ai.nextbillion.navigation.demo.activity.notification.CustomNavigationNotification;
+import ai.nextbillion.navigation.demo.utils.ErrorMessageUtils;
 import androidx.appcompat.app.AppCompatActivity;
+import kotlin.io.TextStreamsKt;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -152,6 +154,9 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
 
                     routeDistance.setText(distanceFormatter.formatDistance(route.distance()));
                     routeDuration.setText(TimeFormatter.formatTimeRemaining(NavigationServiceActivity.this, route.duration()).toString());
+                } else {
+                    String errorMessage = ErrorMessageUtils.getErrorMessage(TextStreamsKt.readText(response.errorBody().charStream()));
+                    Toast.makeText(NavigationServiceActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 

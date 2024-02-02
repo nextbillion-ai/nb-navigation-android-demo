@@ -4,20 +4,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import android.widget.Toast;
 
 import ai.nextbillion.kits.directions.models.DirectionsResponse;
 import ai.nextbillion.kits.directions.models.DirectionsRoute;
 import ai.nextbillion.kits.geojson.Point;
 import ai.nextbillion.navigation.demo.R;
+import ai.nextbillion.navigation.demo.utils.ErrorMessageUtils;
 import ai.nextbillion.navigation.ui.NBNavigation;
 import ai.nextbillion.navigation.ui.NavViewConfig;
 import ai.nextbillion.navigation.ui.NavigationView;
 import ai.nextbillion.navigation.ui.OnNavigationReadyCallback;
 import ai.nextbillion.navigation.ui.listeners.NavigationListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import kotlin.io.TextStreamsKt;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -133,6 +135,9 @@ public class NavigationFragment extends Fragment implements OnNavigationReadyCal
                 if (response.body() != null && !response.body().routes().isEmpty()) {
                     directionsRoute = response.body().routes().get(0);
                     startNavigation();
+                } else {
+                    String errorMessage = ErrorMessageUtils.getErrorMessage(TextStreamsKt.readText(response.errorBody().charStream()));
+                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 

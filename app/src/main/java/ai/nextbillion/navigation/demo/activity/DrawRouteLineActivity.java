@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import ai.nextbillion.maps.location.modes.RenderMode;
 import ai.nextbillion.navigation.core.routefetcher.RouteFetcher;
 import ai.nextbillion.navigation.demo.R;
 import ai.nextbillion.navigation.demo.utils.CameraAnimateUtils;
+import ai.nextbillion.navigation.demo.utils.ErrorMessageUtils;
 import ai.nextbillion.navigation.ui.NavLauncherConfig;
 import ai.nextbillion.navigation.ui.NavigationLauncher;
 import ai.nextbillion.navigation.ui.camera.CameraUpdateMode;
@@ -28,6 +30,7 @@ import ai.nextbillion.navigation.ui.camera.NavigationCameraUpdate;
 import ai.nextbillion.navigation.ui.map.NavNextbillionMap;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import kotlin.io.TextStreamsKt;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -117,6 +120,9 @@ public class DrawRouteLineActivity extends AppCompatActivity implements OnMapRea
                     directionsRoutes = response.body().routes();
                     drawRouteLine();
                     startNav.setEnabled(true);
+                } else {
+                    String errorMessage = ErrorMessageUtils.getErrorMessage(TextStreamsKt.readText(response.errorBody().charStream()));
+                    Toast.makeText(DrawRouteLineActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 

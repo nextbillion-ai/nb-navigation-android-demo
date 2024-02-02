@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ai.nextbillion.kits.directions.models.DirectionsResponse;
 import ai.nextbillion.kits.directions.models.DirectionsRoute;
@@ -12,11 +13,13 @@ import ai.nextbillion.kits.geojson.Point;
 import ai.nextbillion.maps.location.modes.RenderMode;
 import ai.nextbillion.navigation.core.navigation.NavigationConstants;
 import ai.nextbillion.navigation.demo.R;
+import ai.nextbillion.navigation.demo.utils.ErrorMessageUtils;
 import ai.nextbillion.navigation.ui.NBNavigation;
 import ai.nextbillion.navigation.ui.NavLauncherConfig;
 import ai.nextbillion.navigation.ui.NavigationLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import kotlin.io.TextStreamsKt;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,7 +73,11 @@ public class ToggleNavigationThemeActivity extends AppCompatActivity implements 
                         routeGeometry.setText(String.format("Route Geometry: %s", directionsRoute.geometry()));
                         startNavLight.setEnabled(true);
                         startNavDark.setEnabled(true);
-                        startNavAsSetting.setEnabled(true);                    }
+                        startNavAsSetting.setEnabled(true);
+                    } else {
+                        String errorMessage = ErrorMessageUtils.getErrorMessage(TextStreamsKt.readText(response.errorBody().charStream()));
+                        Toast.makeText(ToggleNavigationThemeActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
