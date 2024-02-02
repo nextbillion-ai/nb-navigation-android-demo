@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,9 @@ import ai.nextbillion.kits.geojson.Point;
 import ai.nextbillion.navigation.core.routefetcher.RequestParamConsts;
 import ai.nextbillion.navigation.core.routefetcher.RouteFetcher;
 import ai.nextbillion.navigation.demo.R;
+import ai.nextbillion.navigation.demo.utils.ErrorMessageUtils;
 import androidx.appcompat.app.AppCompatActivity;
+import kotlin.io.TextStreamsKt;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,6 +71,9 @@ public class FetchRoutesActivity extends AppCompatActivity implements View.OnCli
                     if (response.body() != null && !response.body().routes().isEmpty()) {
                         directionsRoute = response.body().routes().get(0);
                         routeGeometry.setText(String.format("Route Geometry: %s", directionsRoute.geometry()));
+                    } else {
+                        String errorMessage = ErrorMessageUtils.getErrorMessage(TextStreamsKt.readText(response.errorBody().charStream()));
+                        Toast.makeText(FetchRoutesActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 }
 
