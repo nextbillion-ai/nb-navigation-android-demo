@@ -1,34 +1,38 @@
 package ai.nextbillion.navigation.demo.activity;
 
+import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.Toast;
 
-import ai.nextbillion.maps.Nextbillion;
-import ai.nextbillion.maps.camera.CameraUpdate;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.lang.ref.WeakReference;
+import java.util.List;
+
 import ai.nextbillion.maps.camera.CameraUpdateFactory;
 import ai.nextbillion.maps.core.MapView;
 import ai.nextbillion.maps.core.NextbillionMap;
 import ai.nextbillion.maps.core.OnMapReadyCallback;
 import ai.nextbillion.maps.core.Style;
-import ai.nextbillion.maps.geometry.LatLng;
+import ai.nextbillion.maps.location.LocationComponent;
+import ai.nextbillion.maps.location.LocationComponentActivationOptions;
+import ai.nextbillion.maps.location.LocationComponentOptions;
+import ai.nextbillion.maps.location.OnCameraTrackingChangedListener;
 import ai.nextbillion.maps.location.engine.LocationEngine;
 import ai.nextbillion.maps.location.engine.LocationEngineCallback;
 import ai.nextbillion.maps.location.engine.LocationEngineProvider;
 import ai.nextbillion.maps.location.engine.LocationEngineRequest;
 import ai.nextbillion.maps.location.engine.LocationEngineResult;
+import ai.nextbillion.maps.location.modes.CameraMode;
 import ai.nextbillion.maps.location.modes.RenderMode;
+import ai.nextbillion.maps.location.permissions.PermissionsListener;
+import ai.nextbillion.maps.location.permissions.PermissionsManager;
 import ai.nextbillion.navigation.demo.R;
-import ai.nextbillion.navigation.ui.camera.CameraUpdateMode;
-import ai.nextbillion.navigation.ui.camera.NavigationCameraUpdate;
 import ai.nextbillion.navigation.ui.map.NavNextbillionMap;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.lang.ref.WeakReference;
 
 /***
  * The example shows how to request user location and display on our MapView
@@ -36,7 +40,7 @@ import java.lang.ref.WeakReference;
  * if location permission is not granted, the demo code will not be able to fetch device location properly
  */
 
-public class TrackCurrentLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class TrackCurrentLocationActivity extends AppCompatActivity implements OnMapReadyCallback, OnCameraTrackingChangedListener {
     private static final int CAMERA_ANIMATION_DURATION = 1000;
     private static final int DEFAULT_CAMERA_ZOOM = 16;
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
@@ -44,10 +48,12 @@ public class TrackCurrentLocationActivity extends AppCompatActivity implements O
 
     private MapView mapView;
     private FloatingActionButton floatingActionButton;
-    private NavNextbillionMap nbMap;
+    private NextbillionMap nbMap;
+    private NavNextbillionMap navNextbillionMap;
     private final TrackCurrentLocationCallback callback = new TrackCurrentLocationCallback(this);
     private LocationEngine locationEngine;
     private Location lastLocation;
+    private PermissionsManager permissionsManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,39 +61,77 @@ public class TrackCurrentLocationActivity extends AppCompatActivity implements O
         setContentView(R.layout.activity_track_current_location);
         mapView = findViewById(R.id.mapView_get_location);
         mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
-
         setUpFloatingButton();
+
+        checkPermissions();
+    }
+
+    private void checkPermissions() {
+        if (PermissionsManager.areLocationPermissionsGranted(this)) {
+            mapView.getMapAsync(this);
+        } else {
+            permissionsManager = new PermissionsManager(new PermissionsListener() {
+                @Override
+                public void onExplanationNeeded(List<String> permissionsToExplain) {
+                    Toast.makeText(TrackCurrentLocationActivity.this, "You need to accept location permissions.",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onPermissionResult(boolean granted) {
+                    if (granted) {
+                        mapView.getMapAsync(TrackCurrentLocationActivity.this);
+                    } else {
+                        finish();
+                    }
+                }
+            });
+            permissionsManager.requestLocationPermissions(this);
+        }
     }
 
     private void setUpFloatingButton() {
         floatingActionButton = findViewById(R.id.get_location);
-        floatingActionButton.setOnClickListener(v -> animateCamera());
-    }
-
-    // This function demonstrate how to focus camera to user location with certain zoom level
-    private void animateCamera() {
-        if (lastLocation != null) {
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), DEFAULT_CAMERA_ZOOM);
-            NavigationCameraUpdate navigationCameraUpdate = new NavigationCameraUpdate(cameraUpdate);
-            navigationCameraUpdate.setMode(CameraUpdateMode.OVERRIDE);
-            nbMap.retrieveCamera().update(navigationCameraUpdate, CAMERA_ANIMATION_DURATION);
-        }
-    }
-
-    @Override
-    public void onMapReady(@NonNull NextbillionMap nextbillionMap) {
-        nextbillionMap.setStyle(new Style.Builder().fromUri("https://api.nextbillion.io/maps/streets/style.json"));
-        nextbillionMap.getStyle(style -> {
-            nbMap = new NavNextbillionMap(mapView, nextbillionMap);
-            nbMap.updateLocationLayerRenderMode(RenderMode.GPS);
-            initializeLocationEngine();
+        floatingActionButton.setOnClickListener(v -> {
+            if (nbMap != null) {
+                LocationComponent locationComponent = nbMap.getLocationComponent();
+                locationComponent.setCameraMode(CameraMode.TRACKING);
+            }
         });
     }
 
+    // This function demonstrate how to focus camera to user location with certain zoom level
+//    private void animateCamera() {
+//        if (nbMap == null) {
+//            return;
+//        }
+//        lastLocation = nbMap.getLocationComponent().getLastKnownLocation();
+//        if (lastLocation != null) {
+//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), DEFAULT_CAMERA_ZOOM);
+//            NavigationCameraUpdate navigationCameraUpdate = new NavigationCameraUpdate(cameraUpdate);
+//            navigationCameraUpdate.setMode(CameraUpdateMode.OVERRIDE);
+//            navNextbillionMap.retrieveCamera().update(navigationCameraUpdate, CAMERA_ANIMATION_DURATION);
+//        }
+//    }
+
+    @Override
+    public void onMapReady(@NonNull NextbillionMap nextbillionMap) {
+        nbMap = nextbillionMap;
+        nextbillionMap.moveCamera(CameraUpdateFactory.zoomBy(16));
+        nextbillionMap.setStyle(new Style.Builder().fromUri("https://api.nextbillion.io/maps/streets/style.json"), style -> {
+            navNextbillionMap = new NavNextbillionMap(mapView, nextbillionMap);
+            initializeLocationEngine();
+            initLocationComponent(style);
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     private void onLocationFound(Location location) {
-        lastLocation = location;
-        nbMap.updateLocation(location);
     }
 
     private LocationEngineRequest buildEngineRequest() {
@@ -104,6 +148,39 @@ public class TrackCurrentLocationActivity extends AppCompatActivity implements O
         LocationEngineRequest request = buildEngineRequest();
         locationEngine.requestLocationUpdates(request, callback, null);
         locationEngine.getLastLocation(callback);
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private void initLocationComponent(Style style) {
+        LocationComponent locationComponent = nbMap.getLocationComponent();
+
+        locationComponent.activateLocationComponent(
+                LocationComponentActivationOptions
+                        .builder(this, style)
+                        //use default location engine
+                        .useDefaultLocationEngine(true)
+                        //or use custom location engine
+//                        .locationEngine(locationEngine)
+                        .locationComponentOptions(LocationComponentOptions.builder(this)
+                                .pulseEnabled(true)
+                                .build())
+                        .build());
+
+        locationComponent.setLocationComponentEnabled(true);
+        locationComponent.setRenderMode(RenderMode.NORMAL);
+        locationComponent.setCameraMode(CameraMode.TRACKING);
+        locationComponent.addOnCameraTrackingChangedListener(this);
+    }
+
+    @Override
+    public void onCameraTrackingDismissed() {
+
+    }
+
+    @Override
+    public void onCameraTrackingChanged(int i) {
+
     }
 
     private static class TrackCurrentLocationCallback implements LocationEngineCallback<LocationEngineResult> {
