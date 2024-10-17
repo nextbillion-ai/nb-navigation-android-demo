@@ -2,6 +2,9 @@ package ai.nextbillion.navigation.demo.speech;
 
 import ai.nextbillion.navigation.ui.voice.SpeechAnnouncement;
 
+/**
+ * A class to listen to speech events.
+ */
 public class NavSpeechListener implements CustomSpeechListener {
 
     private final CustomSpeechAudioFocusManager audioFocusManager;

@@ -41,19 +41,16 @@ public class CustomSpeechPlayer implements SpeechPlayer {
     private Queue<SpeechAnnouncement> announcementQueue;
 
     public CustomSpeechPlayer(Context context, final String language, final CustomSpeechListener speechListener) {
-        textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                boolean ableToInitialize = status == TextToSpeech.SUCCESS && language != null;
-                if (!ableToInitialize) {
-                    LogUtil.e("SpeechPlayer","There was an error initializing native TTS");
-                    return;
-                }
-                setSpeechListener(speechListener);
-                initializeWithLanguage(new Locale(language));
-                speechHasInit = true;
-                playAnnouncementInQueue();
+        textToSpeech = new TextToSpeech(context, status -> {
+            boolean ableToInitialize = status == TextToSpeech.SUCCESS && language != null;
+            if (!ableToInitialize) {
+                LogUtil.e("SpeechPlayer","There was an error initializing native TTS");
+                return;
             }
+            setSpeechListener(speechListener);
+            initializeWithLanguage(new Locale(language));
+            speechHasInit = true;
+            playAnnouncementInQueue();
         });
     }
 
@@ -106,12 +103,11 @@ public class CustomSpeechPlayer implements SpeechPlayer {
     }
 
     /**
-     * To be called during an off-route event, mutes TTS
+     * To be called during an off-route event
      */
     @Override
     public void onOffRoute() {
-        //TODO reported by Armin, off route truncates the TTS, so we temporarily comment this out.
-//        muteTts();
+        // Todo : You can play a custom prompt for this off-route event.
     }
 
     /**

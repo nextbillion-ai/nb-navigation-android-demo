@@ -4,6 +4,10 @@ import android.media.AudioManager;
 import android.os.Build;
 
 
+/**
+ * Provides the correct {@link CustomAudioFocusDelegate} based on the Android version.
+
+ */
 public class CustomAudioFocusDelegateProvider {
 
     private final CustomAudioFocusDelegate audioFocusDelegate;

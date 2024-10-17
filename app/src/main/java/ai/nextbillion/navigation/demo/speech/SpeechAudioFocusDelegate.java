@@ -2,6 +2,9 @@ package ai.nextbillion.navigation.demo.speech;
 
 import android.media.AudioManager;
 
+/**
+ * A class to manages audio focus for speech.
+ */
 class SpeechAudioFocusDelegate implements CustomAudioFocusDelegate {
 
     private final AudioManager audioManager;

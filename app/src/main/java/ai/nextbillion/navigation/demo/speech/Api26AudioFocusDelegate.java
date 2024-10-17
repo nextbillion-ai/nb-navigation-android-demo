@@ -6,6 +6,9 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+/**
+ * Provides the correct {@link CustomAudioFocusDelegate} based on the Android version.
+ */
 @RequiresApi(api = Build.VERSION_CODES.O)
 class Api26AudioFocusDelegate implements CustomAudioFocusDelegate {
 
