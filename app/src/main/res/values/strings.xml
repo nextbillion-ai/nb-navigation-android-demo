@@ -42,8 +42,8 @@
     <string name="activity_customise_navigation_theme">Navigation Theme</string>
     <string name="activity_load_navigationview_in_fragment">Load NavigationView in Fragment</string>
     <string name="activity_customise_dissolved_route_line_style">Dissolved Route Line Theme</string>
-
-
+    <string name="activity_custom_speech_in_navigation">Customize speech player</string>
+    <string name="description_custom_speech_in_navigation">Customize speech player in navigation</string>
     <string name="description_navigation_activity">A complete turn-by-turn experience using default NavigationLauncher</string>
     <string name="description_navigation_service_activity">Start Navigation without UI Binding</string>
     <string name="description_navigation_view_activity">A complete turn-by-turn experience using NavigationView</string>
