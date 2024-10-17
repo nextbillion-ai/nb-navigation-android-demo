@@ -215,6 +215,11 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
     }
 
     @Override
+    public void userOffRouteByRemoveLeg(int i) {
+
+    }
+
+    @Override
     public boolean allowRerouteFrom(Location p0) {
         return true;
     }

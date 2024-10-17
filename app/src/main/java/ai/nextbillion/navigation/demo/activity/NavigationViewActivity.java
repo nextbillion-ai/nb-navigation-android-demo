@@ -1,7 +1,9 @@
 package ai.nextbillion.navigation.demo.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.location.Location;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowInsets;
@@ -9,12 +11,19 @@ import android.view.WindowInsets;
 import java.util.List;
 
 import ai.nextbillion.kits.directions.models.DirectionsRoute;
+import ai.nextbillion.kits.directions.models.RouteRequestParams;
 import ai.nextbillion.kits.geojson.Point;
 import ai.nextbillion.maps.location.modes.RenderMode;
 import ai.nextbillion.navigation.core.navigation.NavEngineConfig;
 import ai.nextbillion.navigation.core.navigator.NavProgress;
 import ai.nextbillion.navigation.core.navigator.ProgressChangeListener;
+import ai.nextbillion.navigation.core.utils.LocaleUtils;
 import ai.nextbillion.navigation.demo.R;
+import ai.nextbillion.navigation.demo.speech.CustomAudioFocusDelegateProvider;
+import ai.nextbillion.navigation.demo.speech.CustomSpeechAudioFocusManager;
+import ai.nextbillion.navigation.demo.speech.CustomSpeechListener;
+import ai.nextbillion.navigation.demo.speech.CustomSpeechPlayer;
+import ai.nextbillion.navigation.demo.speech.NavSpeechListener;
 import ai.nextbillion.navigation.ui.NavViewConfig;
 import ai.nextbillion.navigation.ui.NavigationView;
 import ai.nextbillion.navigation.ui.OnNavigationReadyCallback;
@@ -23,6 +32,9 @@ import ai.nextbillion.navigation.ui.listeners.RouteListener;
 import ai.nextbillion.navigation.ui.utils.StatusBarUtils;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import ai.nextbillion.navigation.ui.voice.SpeechPlayer;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
@@ -84,8 +96,33 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
     private void configRoute(NavViewConfig.Builder viewConfigBuilder) {
         DirectionsRoute route = (DirectionsRoute) getIntent().getSerializableExtra("route");
         List<DirectionsRoute> routes = (List<DirectionsRoute>) getIntent().getSerializableExtra("routes");
+        boolean customSpeech = getIntent().getBooleanExtra("customSpeech", false);
+        if (customSpeech) {
+            LocaleUtils localeUtils = new LocaleUtils();
+            String language = null;
+            assert route != null;
+            if (route.routeOptions() != null) {
+                language = route.routeOptions().language();
+            }
+            if (language == null) {
+                language = localeUtils.inferDeviceLanguage(getApplication());
+            }
+            SpeechPlayer speechPlayer = createSpeechPlayer(language);
+            viewConfigBuilder.speechPlayer(speechPlayer);
+        }
         viewConfigBuilder.route(route);
         viewConfigBuilder.routes(routes);
+    }
+
+    private CustomAudioFocusDelegateProvider buildAudioFocusDelegateProvider(Context context) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return new CustomAudioFocusDelegateProvider(audioManager);
+    }
+    private SpeechPlayer createSpeechPlayer(String language) {
+        CustomAudioFocusDelegateProvider provider = buildAudioFocusDelegateProvider(this);
+        CustomSpeechAudioFocusManager audioFocusManager = new CustomSpeechAudioFocusManager(provider);
+        CustomSpeechListener speechListener = new NavSpeechListener( audioFocusManager);
+        return new CustomSpeechPlayer(this,language,speechListener);
     }
 
 
@@ -206,12 +243,22 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
     }
 
     @Override
-    public void onArrival() {
+    public void onArrival(NavProgress navProgress, int i) {
 
     }
 
     @Override
     public void onUserInTunnel(boolean b) {
 
+    }
+
+    @Override
+    public boolean shouldShowArriveDialog(NavProgress navProgress, int i) {
+        return false;
+    }
+
+    @Override
+    public BottomSheetDialog customArriveDialog(NavProgress navProgress, int i) {
+        return null;
     }
 }

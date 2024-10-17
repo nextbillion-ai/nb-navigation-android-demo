@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'ai.nextbillion.navigation.demo'
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "ai.nextbillion.navigation.demo"
         minSdk 21
-        targetSdk 32
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -31,8 +31,8 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'ai.nextbillion:nb-navigation-android:1.2.1'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'ai.nextbillion:nb-navigation-android:1.3.10'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'pub.devrel:easypermissions:3.0.0'
 
