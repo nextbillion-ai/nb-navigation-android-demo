@@ -8,13 +8,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowInsets;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.Calendar;
 import java.util.List;
 
 import ai.nextbillion.kits.directions.models.DirectionsRoute;
-import ai.nextbillion.kits.directions.models.RouteRequestParams;
+import ai.nextbillion.kits.geojson.LineString;
 import ai.nextbillion.kits.geojson.Point;
 import ai.nextbillion.maps.location.modes.RenderMode;
 import ai.nextbillion.navigation.core.navigation.NavEngineConfig;
+import ai.nextbillion.navigation.core.navigation.NavigationTimeFormat;
 import ai.nextbillion.navigation.core.navigator.NavProgress;
 import ai.nextbillion.navigation.core.navigator.ProgressChangeListener;
 import ai.nextbillion.navigation.core.utils.LocaleUtils;
@@ -30,13 +34,13 @@ import ai.nextbillion.navigation.ui.OnNavigationReadyCallback;
 import ai.nextbillion.navigation.ui.listeners.NavigationListener;
 import ai.nextbillion.navigation.ui.listeners.RouteListener;
 import ai.nextbillion.navigation.ui.utils.StatusBarUtils;
+import ai.nextbillion.navigation.ui.voice.SpeechPlayer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import ai.nextbillion.navigation.ui.voice.SpeechPlayer;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
+
+import static ai.nextbillion.navigation.core.utils.time.TimeFormatter.formatTime;
 
 public class NavigationViewActivity extends AppCompatActivity implements OnNavigationReadyCallback, EasyPermissions.PermissionCallbacks, NavigationListener, StatusBarUtils.OnWindowInsetsChange, ProgressChangeListener, RouteListener {
 
@@ -220,6 +224,28 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
         double durationRemaining = navProgress.durationRemaining;
         double distanceRemaining = navProgress.distanceRemaining;
         int remainingWaypoints = navProgress.remainingWaypoints;
+
+        String locationInfo =
+                "--------- Location Info --------- " + "\n" +
+                        location.getProvider() + "\n" +
+                        "Latitude: " + location.getLatitude() + "\n" +
+                        "Longitude: " + location.getLongitude() + "\n" +
+                        "Altitude: " + location.getAltitude() + "\n" +
+                        "Accuracy: " + location.getAccuracy() + "\n" +
+                        "Speed: " + location.getSpeed() + "\n" +
+                        "Bearing: " + location.getBearing() + "\n" +
+                        "Time: " + location.getTime();
+
+        DirectionsRoute directionsRoute = navProgress.getRoute();
+        String encodedPolyline = directionsRoute.geometry();
+        LineString lineString = LineString.fromPolyline(encodedPolyline, directionsRoute.precision());
+
+        Calendar time = Calendar.getInstance();
+        double routeDuration = navProgress.getRoute().duration();
+        int timeFormatType = NavigationTimeFormat.TWELVE_HOURS;
+        boolean isTwentyFourHourFormat = true;
+        String arrivalTime = formatTime(time, routeDuration, timeFormatType, isTwentyFourHourFormat);
+
     }
 
     @Override
