@@ -116,6 +116,17 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
         }
         viewConfigBuilder.route(route);
         viewConfigBuilder.routes(routes);
+
+        // Retrieved the route geometry and create a LineString from the encoded polyline.
+        String encodedPolyline = route.geometry();
+        LineString lineString = LineString.fromPolyline(encodedPolyline, route.precision());
+
+        // Calculated and formatted the estimated arrival time based on the route duration.
+        Calendar time = Calendar.getInstance();
+        double routeDuration = route.duration();
+        int timeFormatType = NavigationTimeFormat.TWELVE_HOURS;
+        boolean isTwentyFourHourFormat = true;
+        String arrivalTime = formatTime(time, routeDuration, timeFormatType, isTwentyFourHourFormat);
     }
 
     private CustomAudioFocusDelegateProvider buildAudioFocusDelegateProvider(Context context) {
@@ -225,6 +236,7 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
         double distanceRemaining = navProgress.distanceRemaining;
         int remainingWaypoints = navProgress.remainingWaypoints;
 
+        // Detailed location information
         String locationInfo =
                 "--------- Location Info --------- " + "\n" +
                         location.getProvider() + "\n" +
@@ -235,16 +247,6 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                         "Speed: " + location.getSpeed() + "\n" +
                         "Bearing: " + location.getBearing() + "\n" +
                         "Time: " + location.getTime();
-
-        DirectionsRoute directionsRoute = navProgress.getRoute();
-        String encodedPolyline = directionsRoute.geometry();
-        LineString lineString = LineString.fromPolyline(encodedPolyline, directionsRoute.precision());
-
-        Calendar time = Calendar.getInstance();
-        double routeDuration = navProgress.getRoute().duration();
-        int timeFormatType = NavigationTimeFormat.TWELVE_HOURS;
-        boolean isTwentyFourHourFormat = true;
-        String arrivalTime = formatTime(time, routeDuration, timeFormatType, isTwentyFourHourFormat);
 
     }
 
