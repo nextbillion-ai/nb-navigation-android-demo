@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+// todo 4: refer to the following feature overview to implement your requirements
 public class FeatureOverviewActivity extends AppCompatActivity {
 
     private static final String KEY_STATE_FEATURES = "featureList";

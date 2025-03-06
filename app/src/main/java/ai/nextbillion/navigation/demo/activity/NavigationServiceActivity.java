@@ -27,6 +27,7 @@ import ai.nextbillion.navigation.core.navigation.NavigationConstants;
 import ai.nextbillion.navigation.core.navigation.NavigationEventListener;
 import ai.nextbillion.navigation.core.navigator.NavProgress;
 import ai.nextbillion.navigation.core.navigator.ProgressChangeListener;
+import ai.nextbillion.navigation.core.offroute.NavigationState;
 import ai.nextbillion.navigation.core.offroute.OffRouteListener;
 import ai.nextbillion.navigation.core.offroute.OffRouteStatus;
 import ai.nextbillion.navigation.core.routefetcher.NextbillionReroutingCallback;
@@ -36,7 +37,9 @@ import ai.nextbillion.navigation.core.utils.time.TimeFormatter;
 import ai.nextbillion.navigation.demo.R;
 import ai.nextbillion.navigation.demo.activity.notification.CustomNavigationNotification;
 import ai.nextbillion.navigation.demo.utils.ErrorMessageUtils;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import kotlin.io.TextStreamsKt;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -194,6 +197,7 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
     public void onReroutingError(Throwable p0) {
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onLocationUpdate(Location location) {
         rawLocation.setText(location.getLatitude() + "," + location.getLongitude());
@@ -205,13 +209,14 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
     }
 
     @Override
-    public void userOffRoute(OffRouteStatus offRouteStatus, Location location) {
-        if (offRouteStatus == OffRouteStatus.OFF_ROUTE) {
+    public void userOffRoute(NavigationState navigationState, Location location) {
+        if (navigationState == NavigationState.OFF_ROUTE) {
             Toast.makeText(this, "Deviated from the suggested route", Toast.LENGTH_SHORT).show();
         }
-        if (offRouteStatus != null) {
-            navigationOffRouteStatus.setText(offRouteStatus.toString());
+        if (navigationState != null) {
+            navigationOffRouteStatus.setText(navigationState.toString());
         }
+
     }
 
     @Override
