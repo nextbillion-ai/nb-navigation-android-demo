@@ -59,7 +59,7 @@ import ai.nextbillion.navigation.ui.route.OnRouteSelectionChangeListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+/// todo 4: refer to the following codes example to implement your requirements
 /**
  * This activity demonstrates how to fetch a route from the Nextbillion Navigation SDK and launch
  * turn-by-turn navigation with the route.
