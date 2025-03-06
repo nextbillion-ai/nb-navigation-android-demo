@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">NBNavSDKExample</string>
     <string name="fetch_route">Fetch Route</string>
+    <string name="clear_routes">Clear Routes</string>
     <string name="fetch_route_with_routefetcher">Fetch Route with RouteFetcher</string>
     <string name="draw_route">Draw Route Line with duration symbol</string>
     <string name="draw_route_without">Draw Route Line without duration symbol</string>
@@ -70,4 +71,7 @@
     <string name="description_load_navigationview_in_fragment">Load NavigationView in Fragment</string>
     <string name="description__customise_dissolved_route_line_style">Customize styling of Dissolved route line</string>
 
+    <string name="explanation_long_press_waypoint">Long press map to place waypoint</string>
+    <string name="error_select_longer_route">Please select a longer route</string>
+    <string name="error_location_denined">Please grant the location permission</string>
 </resources>

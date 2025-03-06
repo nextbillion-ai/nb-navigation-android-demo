@@ -1,5 +1,6 @@
 package ai.nextbillion.navigation.demo.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -108,6 +109,7 @@ public class FeatureOverviewActivity extends AppCompatActivity {
         outState.putParcelableArrayList(KEY_STATE_FEATURES, (ArrayList<Feature>) features);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class LoadFeatureTask extends AsyncTask<PackageInfo, Void, List<Feature>> {
 
         @Override

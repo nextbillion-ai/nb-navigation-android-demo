@@ -13,6 +13,6 @@ public class NavApplication extends Application {
     public void onCreate() {
         super.onCreate();
         // todo 2: initialize SDK and replace with your own access token
-        Nextbillion.getInstance(getApplicationContext(), "YOUR-API-KEY");
+        Nextbillion.getInstance(getApplicationContext(), "YOUR_ACCESS_TOKEN");
     }
 }

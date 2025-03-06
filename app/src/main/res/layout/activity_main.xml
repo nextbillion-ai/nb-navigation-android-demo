@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ai.nextbillion.maps.core.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:nbmap_uiAttribution="false" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center">
         <Button
-            android:id="@+id/fetchRoute"
+            android:id="@+id/clearRoute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fetch_route"/>
+            android:text="@string/clear_routes"/>
 
         <Button
             android:id="@+id/startNav"
@@ -22,11 +29,6 @@
             android:text="@string/start_navigation"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/routeGeometry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
 
     <ProgressBar
         android:id="@+id/progress"
@@ -35,4 +37,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

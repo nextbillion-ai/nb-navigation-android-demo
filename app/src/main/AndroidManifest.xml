@@ -23,15 +23,6 @@
         android:theme="@style/Theme.Nbnavsdkdemo"
         tools:targetApi="31">
 
-
-        <activity
-            android:name=".activity.NavigationViewActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".activity.FeatureOverviewActivity"
             android:exported="true">
@@ -45,8 +36,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
-            android:name=".activity.NavigationActivity"
+            android:name=".activity.NavigationMapsActivity"
             android:description="@string/description_navigation_activity"
             android:exported="true"
             android:label="@string/activity_navigation">
@@ -56,6 +48,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.FeatureOverviewActivity" />
+        </activity>
+
+        <activity
+            android:name=".activity.NavigationViewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
 
         <activity
@@ -95,18 +96,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.FeatureOverviewActivity" />
         </activity>
-        <activity
-            android:name=".activity.FetchRoutesActivity"
-            android:description="@string/description_fetch_routes_activity"
-            android:exported="true"
-            android:label="@string/activity_fetch_routes">
-            <meta-data
-                android:name="@string/category"
-                android:value="@string/category_navigation" />
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.FeatureOverviewActivity" />
-        </activity>
+
         <activity
             android:name=".activity.DrawRouteLineActivity"
             android:description="@string/description_draw_route_lines_activity"
