@@ -1,5 +1,6 @@
 package ai.nextbillion.navigation.demo.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+// todo 4: refer to the following feature overview to implement your requirements
 public class FeatureOverviewActivity extends AppCompatActivity {
 
     private static final String KEY_STATE_FEATURES = "featureList";
@@ -107,6 +109,7 @@ public class FeatureOverviewActivity extends AppCompatActivity {
         outState.putParcelableArrayList(KEY_STATE_FEATURES, (ArrayList<Feature>) features);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class LoadFeatureTask extends AsyncTask<PackageInfo, Void, List<Feature>> {
 
         @Override

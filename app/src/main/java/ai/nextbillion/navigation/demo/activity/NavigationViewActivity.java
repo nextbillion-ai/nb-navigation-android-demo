@@ -18,6 +18,7 @@ import ai.nextbillion.kits.geojson.LineString;
 import ai.nextbillion.kits.geojson.Point;
 import ai.nextbillion.maps.location.modes.RenderMode;
 import ai.nextbillion.navigation.core.navigation.NavEngineConfig;
+import ai.nextbillion.navigation.core.navigation.NavigationConstants;
 import ai.nextbillion.navigation.core.navigation.NavigationTimeFormat;
 import ai.nextbillion.navigation.core.navigator.NavProgress;
 import ai.nextbillion.navigation.core.navigator.ProgressChangeListener;
@@ -93,7 +94,10 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
         viewConfigBuilder.showSpeedometer(true);
         viewConfigBuilder.locationLayerRenderMode(RenderMode.GPS);
         viewConfigBuilder.navConfig(navConfig.build());
-
+        // You can customize the theme of the navigation view
+//        viewConfigBuilder.darkThemeResId(R.style.Theme_CustomNavigationDark);
+//        viewConfigBuilder.lightThemeResId(R.style.Theme_CustomNavigationLight);
+//        viewConfigBuilder.themeMode(NavigationConstants.NAVIGATION_VIEW_FOLLOW_SYSTEM_MODE);
         navigationView.startNavigation(viewConfigBuilder.build());
     }
 
