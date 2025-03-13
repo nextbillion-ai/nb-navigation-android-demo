@@ -16,8 +16,12 @@ Before running this project, make sure you have configured your own API Key in
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Required only when requesting background location access on
+       Android 10 (API level 29) and higher. -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- For Android 13 and above -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     ```
 3. Set up the Navigation SDK in your Application class
     ```java
