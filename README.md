@@ -9,7 +9,7 @@ Before running this project, make sure you have configured your own API Key in
 ## How to integrate Navigation SDK in your project
 1. Add the navigation SDK dependency in your app level build.gradle file
     ```gradle
-    implementation 'ai.nextbillion:nb-navigation-android:2.0.0''
+    implementation 'ai.nextbillion:nb-navigation-android:2.2.0''
     ```
 2. Add the following permissions in your AndroidManifest.xml file
     ```xml
@@ -22,6 +22,8 @@ Before running this project, make sure you have configured your own API Key in
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- For Android 13 and above -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+   
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     ```
 3. Set up the Navigation SDK in your Application class
     ```java
