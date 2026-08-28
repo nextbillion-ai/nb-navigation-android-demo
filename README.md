@@ -31,3 +31,8 @@ Before running this project, make sure you have configured your own API Key in
     ```
 4. Start the Navigation SDK
    You can start the Navigation SDK by referring to the code snippet in the `NavigationMapsActivity` class of this project.
+
+## Custom speech example
+
+See [Custom speech integration](docs/custom-speech-integration.md) for the standalone route-fetching
+and NavigationView example, including the custom Android TTS player and audio-focus handling.

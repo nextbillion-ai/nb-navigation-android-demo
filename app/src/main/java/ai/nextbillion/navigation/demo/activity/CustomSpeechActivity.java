@@ -2,15 +2,13 @@ package ai.nextbillion.navigation.demo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.Serializable;
+import java.io.IOException;
 import java.util.List;
 
 import ai.nextbillion.kits.directions.models.DirectionsResponse;
@@ -20,73 +18,128 @@ import ai.nextbillion.kits.geojson.Point;
 import ai.nextbillion.navigation.core.routefetcher.RouteFetcher;
 import ai.nextbillion.navigation.demo.R;
 import ai.nextbillion.navigation.demo.utils.ErrorMessageUtils;
-import kotlin.io.TextStreamsKt;
+import androidx.appcompat.app.AppCompatActivity;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomSpeechActivity extends AppCompatActivity implements View.OnClickListener {
+/**
+ * Fetches a route for the custom speech sample.
+ *
+ * <p>The actual NavigationView and custom SpeechPlayer integration live in
+ * {@link CustomSpeechNavigationActivity}. Keeping route preparation and navigation in separate
+ * activities makes the custom speech integration easier to copy into another application.</p>
+ */
+public class CustomSpeechActivity extends AppCompatActivity {
 
-    private Button fetchRoute;
-    private Button startNav;
-    private TextView routeGeometry;
+    private static final Point SAMPLE_ORIGIN =
+            Point.fromLngLat(103.75986708439264, 1.312533169133601);
+    private static final Point SAMPLE_DESTINATION =
+            Point.fromLngLat(103.77982271935586, 1.310473772283314);
+
+    private Button fetchRouteButton;
+    private Button startNavigationButton;
+    private TextView routeGeometryText;
+    private ProgressBar progressBar;
+
     private DirectionsRoute directionsRoute;
     private List<DirectionsRoute> directionsRoutes;
-    private ProgressBar progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_navigation);
-        fetchRoute = findViewById(R.id.fetchRoute);
-        startNav = findViewById(R.id.startNav);
-        routeGeometry = findViewById(R.id.routeGeometry);
-        progress = findViewById(R.id.progress);
-        fetchRoute.setOnClickListener(this);
-        startNav.setOnClickListener(this);
-        startNav.setEnabled(false);
+        setContentView(R.layout.activity_custom_speech);
 
+        fetchRouteButton = findViewById(R.id.custom_speech_fetch_route);
+        startNavigationButton = findViewById(R.id.custom_speech_start_navigation);
+        routeGeometryText = findViewById(R.id.custom_speech_route_geometry);
+        progressBar = findViewById(R.id.custom_speech_progress);
+
+        fetchRouteButton.setOnClickListener(view -> fetchRoute());
+        startNavigationButton.setOnClickListener(view -> startCustomSpeechNavigation());
+        startNavigationButton.setEnabled(false);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.fetchRoute) {
-            progress.setVisibility(View.VISIBLE);
-            Point origin = Point.fromLngLat(103.75986708439264, 1.312533169133601);
-            Point destination = Point.fromLngLat(103.77982271935586, 1.310473772283314);
+    private void fetchRoute() {
+        setLoading(true);
 
-            RouteRequestParams.Builder builder = RouteRequestParams.builder()
-                    .origin(origin)
-                    .destination(destination)
-                    .language("en")
-                    .departureTime((int) (System.currentTimeMillis()/1000));
+        RouteRequestParams requestParams = RouteRequestParams.builder()
+                .origin(SAMPLE_ORIGIN)
+                .destination(SAMPLE_DESTINATION)
+                // The route language is also used to select the Android TTS language.
+                .language("en")
+                .departureTime((int) (System.currentTimeMillis() / 1000))
+                .build();
 
-            RouteFetcher.getRoute(builder.build(), new Callback<DirectionsResponse>() {
-                @Override
-                public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
-                    progress.setVisibility(View.GONE);
-                    //start navigation with the route we just fetched.
-                    if (response.body() != null && !response.body().routes().isEmpty()) {
-                        directionsRoute = response.body().routes().get(0);
-                        directionsRoutes = response.body().routes();
-                        routeGeometry.setText(String.format("Route Geometry: %s", directionsRoute.geometry()));
-                        startNav.setEnabled(true);
-                    } else {
-                        String errorMessage = ErrorMessageUtils.getErrorMessage(TextStreamsKt.readText(response.errorBody().charStream()));
-                        Toast.makeText(CustomSpeechActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                    }
+        RouteFetcher.getRoute(requestParams, new Callback<DirectionsResponse>() {
+            @Override
+            public void onResponse(Call<DirectionsResponse> call,
+                                   Response<DirectionsResponse> response) {
+                setLoading(false);
+
+                DirectionsResponse body = response.body();
+                if (response.isSuccessful() && body != null && body.routes() != null
+                        && !body.routes().isEmpty()) {
+                    directionsRoutes = body.routes();
+                    directionsRoute = directionsRoutes.get(0);
+                    routeGeometryText.setText(getString(
+                            R.string.custom_speech_route_geometry,
+                            directionsRoute.geometry()
+                    ));
+                    startNavigationButton.setEnabled(true);
+                    return;
                 }
 
-                @Override
-                public void onFailure(Call<DirectionsResponse> call, Throwable t) {
-                    progress.setVisibility(View.GONE);
-                }
-            });
-        } else if (view.getId() == R.id.startNav) {
-            Intent intent = new Intent(this,  NavigationViewActivity.class);
-            intent.putExtra("route", directionsRoute);
-            intent.putExtra("routes", (Serializable) directionsRoutes);
-            intent.putExtra("customSpeech", true);
-            startActivity(intent);
+                showRouteError(response.errorBody());
+            }
+
+            @Override
+            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                setLoading(false);
+                Toast.makeText(
+                        CustomSpeechActivity.this,
+                        R.string.custom_speech_route_fetch_failed,
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
+    }
+
+    private void startCustomSpeechNavigation() {
+        if (directionsRoute == null || directionsRoutes == null) {
+            return;
         }
+
+        Intent intent = CustomSpeechNavigationActivity.newIntent(
+                this,
+                directionsRoute,
+                directionsRoutes
+        );
+        startActivity(intent);
+    }
+
+    private void setLoading(boolean loading) {
+        progressBar.setVisibility(loading ? ProgressBar.VISIBLE : ProgressBar.GONE);
+        fetchRouteButton.setEnabled(!loading);
+        startNavigationButton.setEnabled(
+                !loading && directionsRoute != null && directionsRoutes != null
+        );
+    }
+
+    private void showRouteError(ResponseBody errorBody) {
+        String errorMessage = null;
+        if (errorBody != null) {
+            try {
+                errorMessage = ErrorMessageUtils.getErrorMessage(errorBody.string());
+            } catch (IOException ignored) {
+                // Fall back to the sample's generic message below.
+            }
+        }
+
+        if (TextUtils.isEmpty(errorMessage)) {
+            errorMessage = getString(R.string.custom_speech_route_fetch_failed);
+        }
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

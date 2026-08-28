@@ -1,9 +1,7 @@
 package ai.nextbillion.navigation.demo.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.location.Location;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowInsets;
@@ -22,20 +20,13 @@ import ai.nextbillion.navigation.core.navigation.NavigationConstants;
 import ai.nextbillion.navigation.core.navigation.NavigationTimeFormat;
 import ai.nextbillion.navigation.core.navigator.NavProgress;
 import ai.nextbillion.navigation.core.navigator.ProgressChangeListener;
-import ai.nextbillion.navigation.core.utils.LocaleUtils;
 import ai.nextbillion.navigation.demo.R;
-import ai.nextbillion.navigation.demo.speech.CustomAudioFocusDelegateProvider;
-import ai.nextbillion.navigation.demo.speech.CustomSpeechAudioFocusManager;
-import ai.nextbillion.navigation.demo.speech.CustomSpeechListener;
-import ai.nextbillion.navigation.demo.speech.CustomSpeechPlayer;
-import ai.nextbillion.navigation.demo.speech.NavSpeechListener;
 import ai.nextbillion.navigation.ui.NavViewConfig;
 import ai.nextbillion.navigation.ui.NavigationView;
 import ai.nextbillion.navigation.ui.OnNavigationReadyCallback;
 import ai.nextbillion.navigation.ui.listeners.NavigationListener;
 import ai.nextbillion.navigation.ui.listeners.RouteListener;
 import ai.nextbillion.navigation.ui.utils.StatusBarUtils;
-import ai.nextbillion.navigation.ui.voice.SpeechPlayer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -104,34 +95,9 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
     private void configRoute(NavViewConfig.Builder viewConfigBuilder) {
         DirectionsRoute route = (DirectionsRoute) getIntent().getSerializableExtra("route");
         List<DirectionsRoute> routes = (List<DirectionsRoute>) getIntent().getSerializableExtra("routes");
-        boolean customSpeech = getIntent().getBooleanExtra("customSpeech", false);
-        if (customSpeech) {
-            LocaleUtils localeUtils = new LocaleUtils();
-            String language = null;
-            assert route != null;
-            if (route.routeOptions() != null) {
-                language = route.routeOptions().language();
-            }
-            if (language == null) {
-                language = localeUtils.inferDeviceLanguage(getApplication());
-            }
-            SpeechPlayer speechPlayer = createSpeechPlayer(language);
-            viewConfigBuilder.speechPlayer(speechPlayer);
-        }
         viewConfigBuilder.route(route);
         viewConfigBuilder.routes(routes);
 
-    }
-
-    private CustomAudioFocusDelegateProvider buildAudioFocusDelegateProvider(Context context) {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        return new CustomAudioFocusDelegateProvider(audioManager);
-    }
-    private SpeechPlayer createSpeechPlayer(String language) {
-        CustomAudioFocusDelegateProvider provider = buildAudioFocusDelegateProvider(this);
-        CustomSpeechAudioFocusManager audioFocusManager = new CustomSpeechAudioFocusManager(provider);
-        CustomSpeechListener speechListener = new NavSpeechListener( audioFocusManager);
-        return new CustomSpeechPlayer(this,language,speechListener);
     }
 
 
