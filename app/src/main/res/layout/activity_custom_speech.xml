@@ -6,33 +6,38 @@
     android:padding="10dp">
 
     <LinearLayout
+        style="?android:attr/buttonBarStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/fetchRoute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fetch_route"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/startNav"
+            android:id="@+id/custom_speech_fetch_route"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="@string/start_navigation"/>
+            android:text="@string/fetch_route" />
+
+        <Button
+            android:id="@+id/custom_speech_start_navigation"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/start_navigation" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/routeGeometry"
+        android:id="@+id/custom_speech_route_geometry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <ProgressBar
-        android:id="@+id/progress"
-        android:visibility="gone"
+        android:id="@+id/custom_speech_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </LinearLayout>

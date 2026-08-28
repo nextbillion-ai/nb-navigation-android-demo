@@ -27,7 +27,6 @@ import ai.nextbillion.navigation.core.navigation.NavigationConstants;
 import ai.nextbillion.navigation.core.navigation.NavigationEventListener;
 import ai.nextbillion.navigation.core.navigator.NavProgress;
 import ai.nextbillion.navigation.core.navigator.ProgressChangeListener;
-import ai.nextbillion.navigation.core.offroute.NavigationState;
 import ai.nextbillion.navigation.core.offroute.OffRouteListener;
 import ai.nextbillion.navigation.core.offroute.OffRouteStatus;
 import ai.nextbillion.navigation.core.routefetcher.NextbillionReroutingCallback;
@@ -209,14 +208,11 @@ public class NavigationServiceActivity extends AppCompatActivity implements Next
     }
 
     @Override
-    public void userOffRoute(NavigationState navigationState, Location location) {
-        if (navigationState == NavigationState.OFF_ROUTE) {
+    public void userOffRoute(boolean isOffRoute, Location location, String reason) {
+        if (isOffRoute) {
             Toast.makeText(this, "Deviated from the suggested route", Toast.LENGTH_SHORT).show();
         }
-        if (navigationState != null) {
-            navigationOffRouteStatus.setText(navigationState.toString());
-        }
-
+        navigationOffRouteStatus.setText(reason != null ? reason : Boolean.toString(isOffRoute));
     }
 
     @Override

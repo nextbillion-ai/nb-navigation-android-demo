@@ -45,6 +45,11 @@
     <string name="activity_customise_dissolved_route_line_style">Dissolved Route Line Theme</string>
     <string name="activity_custom_speech_in_navigation">Customize speech player</string>
     <string name="description_custom_speech_in_navigation">Customize speech player in navigation</string>
+    <string name="custom_speech_route_geometry">Route Geometry: %1$s</string>
+    <string name="custom_speech_route_fetch_failed">Unable to fetch a route</string>
+    <string name="custom_speech_route_missing">No route was provided for navigation</string>
+    <string name="custom_speech_location_permission_rationale">Navigation requires location access</string>
+    <string name="custom_speech_location_permission_denied">Please grant location permission to start navigation</string>
     <string name="description_navigation_activity">A complete turn-by-turn experience using default NavigationLauncher</string>
     <string name="description_navigation_service_activity">Start Navigation without UI Binding</string>
     <string name="description_navigation_view_activity">A complete turn-by-turn experience using NavigationView</string>

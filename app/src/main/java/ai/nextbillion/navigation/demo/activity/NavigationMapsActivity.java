@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -23,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ai.nextbillion.kits.directions.models.DirectionsResponse;
@@ -47,7 +49,6 @@ import ai.nextbillion.maps.location.engine.LocationEngineResult;
 import ai.nextbillion.maps.location.modes.RenderMode;
 import ai.nextbillion.navigation.core.navigation.NavigationConstants;
 import ai.nextbillion.navigation.core.routefetcher.RequestParamConsts;
-import ai.nextbillion.navigation.core.utils.LogUtil;
 import ai.nextbillion.navigation.demo.R;
 import ai.nextbillion.navigation.ui.NBNavigation;
 import ai.nextbillion.navigation.ui.NavLauncherConfig;
@@ -79,6 +80,9 @@ public class NavigationMapsActivity extends AppCompatActivity implements View.On
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 500;
     private static final int DEFAULT_CAMERA_ZOOM = 16;
+    private static final int REQUEST_DEPARTURE_TIME = 1784136091;
+    private static final Point REQUEST_ORIGIN = Point.fromLngLat(-80.8851264, 35.1969205);
+    private static final Point REQUEST_DESTINATION = Point.fromLngLat(-80.885067, 35.196718);
     private Button startNav;
 
     Button routesClearButton;
@@ -186,46 +190,19 @@ public class NavigationMapsActivity extends AppCompatActivity implements View.On
         }
     }
 
-    RouteRequestParams.Builder initRoutingOptions() {        // Avoids
-        List<String> avoids = new ArrayList<>();
-        avoids.add(RequestParamConsts.AVOID_TOLL);
-        avoids.add(RequestParamConsts.AVOID_UTURN);
-        avoids.add(RequestParamConsts.AVOID_SERVICE_ROAD);
-        avoids.add(RequestParamConsts.AVOID_FERRY);
-        avoids.add(RequestParamConsts.AVOID_HIGHWAY);
-        avoids.add(RequestParamConsts.AVOID_TOLL);
-        avoids.add(RequestParamConsts.AVOID_SHARP_TURN);
-
-        // Hazmat type
-        List<String> hazmatType = new ArrayList<>();
-        hazmatType.add(RequestParamConsts.HAZMAT_GENERAL);
-        hazmatType.add(RequestParamConsts.HAZMAT_EXPLOSIVE);
-        hazmatType.add(RequestParamConsts.HAZMAT_HARMFUL_TO_WATER);
-        hazmatType.add(RequestParamConsts.HAZMAT_CIRCUMSTANTIAL);
-
-        String[] truckSize = new String[]{"200", "250", "600"};  // Format: height,width,length
-
+    RouteRequestParams.Builder initRoutingOptions() {
         return RouteRequestParams.builder()
-                .mode(RequestParamConsts.MODE_CAR)  // Set which driving mode the service should use to determine a route.
-                                                    // Parameter can be set as  RequestParamConsts.MODE_CAR or RequestParamConsts.MODE_TRUCK .
-                                                    // RequestParamConsts.MODE_TRUCK only available when option is set to 'RequestParamConsts.FLEXIBLE'
-                .alternatives(true) // set to true to get multiple routes
-                .altCount(3) // set the number of alternative routes
-                .language("en")  // set language with the locale language code
-                .option(RequestParamConsts.FLEXIBLE) // enable flexible api engine
-//                .avoid(avoids) // set the avoid options
-//                .truckSize(Arrays.asList(truckSize)) // This defines the dimensions of a truck in centimeters (cm), only for truck mode , Format: height,width,length
-//                .truckWeight(5)   // This parameter defines the weight of the truck including trailers and shipped goods in kilograms (kg), only for truck mode .
-                                    // The minimum value is 1, the maximum value is 100000
-                .hazmatType(hazmatType) // Specify the type of hazardous material being carried and the service will avoid roads which are not suitable for the type of goods specified.
-                .crossBorder(false)  // Specify if crossing an international border is expected for operations near border areas.
-                                        // When set to false, the API will prohibit routes going back & forth between countries.
-                                        // Consequently, routes within the same country will be preferred if they are feasible for the given set of destination or waypoints .
-                                        // When set to true, the routes will be allowed to go back & forth between countries as needed.
-                                        // This feature is available in North America region only. Please get in touch with support@nextbillion.ai to enquire/enable other areas.
-                .truckAxleLoad(12)
-                .routeType(RequestParamConsts.FASTEST_TYPE) // set the route type, RequestParamConsts.FASTEST_TYPE, RequestParamConsts.SHORTEST_TYPE , This is only available when option is set to 'RequestParamConsts.FLEXIBLE'
-                .unit(RequestParamConsts.METRIC); // set the unit, RequestParamConsts.METRIC, RequestParamConsts.IMPERIAL
+                .mode(RequestParamConsts.MODE_CAR)
+                .alternatives(false)
+                .altCount(0)
+                .language("en")
+                .option(RequestParamConsts.FLEXIBLE)
+                .crossBorder(false)
+                .roadInfo(Collections.singletonList(RequestParamConsts.MAX_SPEED))
+                .departureTime(REQUEST_DEPARTURE_TIME)
+                .unit(RequestParamConsts.IMPERIAL)
+                .overview(RequestParamConsts.OVERVIEW_FULL)
+                .geometry(RequestParamConsts.GEOMETRY_POLYLINE6);
     }
 
     @Override
@@ -369,6 +346,7 @@ public class NavigationMapsActivity extends AppCompatActivity implements View.On
             navNextbillionMap = new NavNextbillionMap(mapView, nextbillionMap);
             navNextbillionMap.setOnRouteSelectionChangeListener(this);
             navNextbillionMap.updateLocationLayerRenderMode(RenderMode.COMPASS);
+            showConfiguredRoute();
             initializeLocationEngine();
         });
     }
@@ -393,39 +371,47 @@ public class NavigationMapsActivity extends AppCompatActivity implements View.On
         navNextbillionMap.addMarker(this, point);
         startNav.setEnabled(false);
         if (locationFound) {
-            fetchNBRoute();
+            fetchNBRoute(currentLocation, point);
         }
     }
 
+    private void showConfiguredRoute() {
+        mWayPoints.clear();
+        mWayPoints.add(REQUEST_DESTINATION);
+        navNextbillionMap.clearMarkers();
+        navNextbillionMap.addMarker(this, REQUEST_DESTINATION);
+        animateCamera(new LatLng(REQUEST_ORIGIN.latitude(), REQUEST_ORIGIN.longitude()));
+        fetchNBRoute(REQUEST_ORIGIN, REQUEST_DESTINATION);
+    }
+
     /// MARK: - Fetch Route
-    private void fetchNBRoute() {
+    private void fetchNBRoute(Point origin, Point destination) {
         if (mWayPoints.size() >= 3) {
             List<Point> waypoints = mWayPoints.subList(1, mWayPoints.size() - 1);
-            LogUtil.w("Waypoints", "waypoints count : " + waypoints.size());
+            Log.w("Waypoints", "waypoints count : " + waypoints.size());
             requestOptionsBuilder.waypoints(waypoints);
         }
-        LogUtil.w("Waypoints", "mWayPoints count : " + mWayPoints.size());
+        Log.w("Waypoints", "mWayPoints count : " + mWayPoints.size());
         showLoading();
-        NBNavigation.fetchRoute(currentLocation, mWayPoints.get(mWayPoints.size() - 1), requestOptionsBuilder, new Callback<DirectionsResponse>() {
+        NBNavigation.fetchRoute(origin, destination, requestOptionsBuilder, new Callback<DirectionsResponse>() {
             @Override
             public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
                 hideLoading();
                 if (response.isSuccessful()) {
                     DirectionsResponse directionsResponse = response.body();
-                    assert directionsResponse != null;
-                    DirectionsRoute route = directionsResponse.routes().get(0);
-                    hideLoading();
-                    if (route.distance() > 25d) {
-                        selectedRoute = route;
-                        mRoutes = directionsResponse.routes();
-                        startNav.setEnabled(true);
-                        routesClearButton.setEnabled(true);
-                        startNav.setVisibility(View.VISIBLE);
-                        navNextbillionMap.drawRoutes(mRoutes);
-                        boundCameraToRoute(route);
-                    } else {
-                        Snackbar.make(mapView, R.string.error_select_longer_route, BaseTransientBottomBar.LENGTH_SHORT).show();
+                    if (directionsResponse == null || directionsResponse.routes() == null
+                            || directionsResponse.routes().isEmpty()) {
+                        Snackbar.make(mapView, "No route returned", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        return;
                     }
+                    DirectionsRoute route = directionsResponse.routes().get(0);
+                    selectedRoute = route;
+                    mRoutes = directionsResponse.routes();
+                    startNav.setEnabled(true);
+                    routesClearButton.setEnabled(true);
+                    startNav.setVisibility(View.VISIBLE);
+                    navNextbillionMap.drawRoutes(mRoutes);
+                    boundCameraToRoute(route);
                 } else {
                     Snackbar.make(mapView, response.toString(), BaseTransientBottomBar.LENGTH_SHORT).show();
                 }

@@ -3,6 +3,7 @@ package ai.nextbillion.navigation.demo.speech;
 import android.content.Context;
 import android.speech.tts.UtteranceProgressListener;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 import java.util.Queue;
@@ -16,9 +17,6 @@ import android.speech.tts.TextToSpeech;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Locale;
-
-import ai.nextbillion.navigation.core.utils.LogUtil;
-
 
 /**
  * Default player used to play voice instructions when a connection to Polly is unable to be established.
@@ -46,7 +44,7 @@ public class CustomSpeechPlayer implements SpeechPlayer {
             public void onInit(int status) {
                 boolean ableToInitialize = status == TextToSpeech.SUCCESS && language != null;
                 if (!ableToInitialize) {
-                    LogUtil.e("SpeechPlayer","There was an error initializing native TTS");
+                    Log.e("SpeechPlayer","There was an error initializing native TTS");
                     return;
                 }
                 setSpeechListener(speechListener);
@@ -64,7 +62,7 @@ public class CustomSpeechPlayer implements SpeechPlayer {
      */
     @Override
     public void play(SpeechAnnouncement speechAnnouncement) {
-        LogUtil.w("SpeechPlayer","play: " + speechAnnouncement.announcement());
+        Log.w("SpeechPlayer","play: " + speechAnnouncement.announcement());
         if (!speechHasInit){
             pushAnnouncementIntoQueue(speechAnnouncement);
             return;
@@ -149,7 +147,7 @@ public class CustomSpeechPlayer implements SpeechPlayer {
     private void initializeWithLanguage(Locale language) {
         boolean isLanguageAvailable = textToSpeech.isLanguageAvailable(language) == TextToSpeech.LANG_AVAILABLE;
         if (!isLanguageAvailable) {
-            LogUtil.w("SpeechPlayer","The specified language is not supported by TTS");
+            Log.w("SpeechPlayer","The specified language is not supported by TTS");
             return;
         }
         languageSupported = true;

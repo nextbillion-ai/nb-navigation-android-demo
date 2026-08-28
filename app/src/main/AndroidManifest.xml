@@ -267,6 +267,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.FeatureOverviewActivity" />
         </activity>
+        <activity
+            android:name=".activity.CustomSpeechNavigationActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
     </application>
 
